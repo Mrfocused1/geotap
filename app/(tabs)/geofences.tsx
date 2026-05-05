@@ -82,7 +82,7 @@ export default function GeofencesScreen() {
     );
   };
 
-  const onToggle = (id: string) => {
+  const onToggle = (id: string, _next: boolean) => {
     toggleActive(id).catch((e) => {
       Alert.alert('Toggle failed', String(e));
     });
