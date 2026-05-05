@@ -31,8 +31,9 @@ function useAuthRouting(onboardingComplete: boolean | null) {
     const inOnboarding = segments[0] === '(onboarding)';
     const inAuth = segments[0] === '(auth)';
     const inTabs = segments[0] === '(tabs)';
+    const inGeofences = segments[0] === 'geofences';
 
-    if (status === 'authenticated' && !inTabs) {
+    if (status === 'authenticated' && !inTabs && !inGeofences) {
       router.replace('/(tabs)');
       return;
     }
@@ -93,6 +94,22 @@ export default function RootLayout() {
         <Stack.Screen name="(onboarding)" />
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="geofences/create"
+          options={{
+            headerShown: true,
+            headerTitle: 'New Geofence',
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="geofences/[id]"
+          options={{
+            headerShown: true,
+            headerTitle: 'Edit Geofence',
+            presentation: 'modal',
+          }}
+        />
       </Stack>
     </>
   );
