@@ -42,14 +42,19 @@ export default function OnboardingScreen() {
   const router = useRouter();
   const slide = SLIDES[index]!;
 
-  async function finish() {
+  const completeOnboarding = async () => {
     await AsyncStorage.setItem(Config.storage.ONBOARDING_KEY, 'true');
     router.replace('/(auth)/register');
-  }
+  };
+
+  const skipOnboarding = async () => {
+    await AsyncStorage.setItem(Config.storage.ONBOARDING_KEY, 'true');
+    router.replace('/(auth)/login');
+  };
 
   function next() {
     if (index < SLIDES.length - 1) setIndex(index + 1);
-    else finish();
+    else completeOnboarding();
   }
 
   return (
@@ -58,7 +63,7 @@ export default function OnboardingScreen() {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Skip onboarding"
-          onPress={finish}
+          onPress={skipOnboarding}
           className="min-h-[48px] min-w-[48px] items-end justify-center"
         >
           <Text className="text-slate-300 font-medium">Skip</Text>
