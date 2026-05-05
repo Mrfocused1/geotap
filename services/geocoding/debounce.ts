@@ -1,7 +1,10 @@
+const CANCELLED = new Error('debounce cancelled');
+
 /**
  * Returns a debounced wrapper that resolves with the result of the
  * latest invocation after `delayMs` of inactivity. Earlier promises
  * resolve to the latest call's result so callers can `await` safely.
+ * Calling cancel() rejects all pending promises with a stable sentinel.
  */
 export function debounceAsync<TArgs extends unknown[], TResult>(
   fn: (...args: TArgs) => Promise<TResult>,
@@ -21,6 +24,9 @@ export function debounceAsync<TArgs extends unknown[], TResult>(
       clearTimeout(timer);
       timer = null;
     }
+    const resolvers = pendingResolvers;
+    pendingResolvers = [];
+    resolvers.forEach((r) => r.reject(CANCELLED));
   };
 
   const call = (...args: TArgs) =>
@@ -40,3 +46,5 @@ export function debounceAsync<TArgs extends unknown[], TResult>(
 
   return { call, cancel };
 }
+
+export { CANCELLED as DEBOUNCE_CANCELLED };

@@ -3,7 +3,7 @@ import type {
   GeocodingResult,
   IGeocodingService,
 } from '@/services/interfaces/IGeocodingService';
-import { debounceAsync } from '@/services/geocoding/debounce';
+import { debounceAsync, DEBOUNCE_CANCELLED } from '@/services/geocoding/debounce';
 import { parseNominatimResponse } from '@/services/geocoding/parseNominatim';
 
 async function fetchNominatim(query: string): Promise<GeocodingResult[]> {
@@ -34,7 +34,10 @@ const debounced = debounceAsync(fetchNominatim, Config.geocoding.DEBOUNCE_MS);
 
 export const geocodingService: IGeocodingService = {
   search(query) {
-    return debounced.call(query);
+    return debounced.call(query).catch((e) => {
+      if (e === DEBOUNCE_CANCELLED) return [];
+      throw e;
+    });
   },
   cancel() {
     debounced.cancel();

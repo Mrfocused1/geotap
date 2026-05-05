@@ -1,4 +1,4 @@
-import { debounceAsync } from '@/services/geocoding/debounce';
+import { debounceAsync, DEBOUNCE_CANCELLED } from '@/services/geocoding/debounce';
 
 jest.useFakeTimers();
 
@@ -21,12 +21,13 @@ describe('debounceAsync', () => {
     expect(r3).toBe(6);
   });
 
-  it('cancel() prevents pending invocation', () => {
+  it('cancel() rejects pending promises and prevents invocation', async () => {
     const fn = jest.fn(async () => 'x');
     const { call, cancel } = debounceAsync(fn, 100);
-    void call();
+    const p = call();
     cancel();
     jest.advanceTimersByTime(200);
+    await expect(p).rejects.toBe(DEBOUNCE_CANCELLED);
     expect(fn).not.toHaveBeenCalled();
   });
 });
