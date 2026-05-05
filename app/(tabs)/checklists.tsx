@@ -112,11 +112,11 @@ export default function ChecklistsScreen() {
   return (
     <View className="flex-1 bg-surface-dark">
       <View className="px-6 pt-16 pb-3">
-        <Text className="text-slate-50 text-3xl font-bold">Checklists</Text>
+        <Text className="text-slate-900 text-3xl font-bold">Checklists</Text>
       </View>
 
       <View className="px-6 gap-3 pb-3">
-        <View className="flex-row items-center gap-2 bg-surface rounded-input px-3 border border-slate-700">
+        <View className="flex-row items-center gap-2 bg-surface rounded-input px-3 border border-slate-200">
           <Search stroke={Colors.text.muted} size={18} />
           <TextInput
             accessibilityLabel="Search checklists"
@@ -124,7 +124,7 @@ export default function ChecklistsScreen() {
             onChangeText={setQuery}
             placeholder="Search checklists or items"
             placeholderTextColor="#94a3b8"
-            className="flex-1 min-h-[48px] text-slate-100"
+            className="flex-1 min-h-[48px] text-slate-800"
             autoCapitalize="none"
             autoCorrect={false}
           />
@@ -145,7 +145,7 @@ export default function ChecklistsScreen() {
                 className={
                   sortMode === s.id
                     ? 'text-white text-sm font-semibold'
-                    : 'text-slate-300 text-sm'
+                    : 'text-slate-600 text-sm'
                 }
               >
                 {s.label}
@@ -167,7 +167,7 @@ export default function ChecklistsScreen() {
         onRefresh={onRefresh}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
-          <Text className="text-slate-400 text-center mt-12">
+          <Text className="text-slate-500 text-center mt-12">
             {query.trim().length > 0
               ? 'No checklists match your search.'
               : 'No checklists yet. Tap + to create one.'}

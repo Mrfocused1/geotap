@@ -66,7 +66,7 @@ export default function OnboardingScreen() {
           onPress={skipOnboarding}
           className="min-h-[48px] min-w-[48px] items-end justify-center"
         >
-          <Text className="text-slate-300 font-medium">Skip</Text>
+          <Text className="text-slate-600 font-medium">Skip</Text>
         </Pressable>
       </View>
 
@@ -74,10 +74,10 @@ export default function OnboardingScreen() {
         <View className="h-24 w-24 items-center justify-center rounded-full bg-primary-900">
           <SlideIcon icon={slide.icon} />
         </View>
-        <Text className="text-slate-50 text-3xl font-bold text-center">
+        <Text className="text-slate-900 text-3xl font-bold text-center">
           {slide.title}
         </Text>
-        <Text className="text-slate-300 text-base text-center leading-6 max-w-sm">
+        <Text className="text-slate-600 text-base text-center leading-6 max-w-sm">
           {slide.body}
         </Text>
       </View>
@@ -88,7 +88,7 @@ export default function OnboardingScreen() {
             <View
               key={i}
               className={`h-2 rounded-full ${
-                i === index ? 'w-6 bg-primary-600' : 'w-2 bg-slate-600'
+                i === index ? 'w-6 bg-primary-600' : 'w-2 bg-slate-300'
               }`}
             />
           ))}

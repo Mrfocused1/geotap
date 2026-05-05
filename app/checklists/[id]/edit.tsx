@@ -110,7 +110,7 @@ export default function EditChecklistScreen() {
   if (!checklist) {
     return (
       <View className="flex-1 items-center justify-center bg-surface-dark px-6">
-        <Text className="text-slate-100 text-lg">Checklist not found.</Text>
+        <Text className="text-slate-800 text-lg">Checklist not found.</Text>
       </View>
     );
   }

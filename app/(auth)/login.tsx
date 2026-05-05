@@ -30,8 +30,8 @@ export default function LoginScreen() {
   return (
     <View className="flex-1 bg-surface-dark px-6 pt-20 pb-10 gap-6">
       <View className="gap-2">
-        <Text className="text-slate-50 text-3xl font-bold">Welcome back</Text>
-        <Text className="text-slate-400">
+        <Text className="text-slate-900 text-3xl font-bold">Welcome back</Text>
+        <Text className="text-slate-500">
           Log in to keep watch over your places.
         </Text>
       </View>

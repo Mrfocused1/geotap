@@ -200,7 +200,7 @@ export function ChecklistForm({
       keyboardShouldPersistTaps="handled"
     >
       <View className="gap-1">
-        <Text className="text-slate-200 font-medium text-sm">Name</Text>
+        <Text className="text-slate-700 font-medium text-sm">Name</Text>
         <TextInput
           accessibilityLabel="Checklist name"
           value={state.name}
@@ -208,16 +208,16 @@ export function ChecklistForm({
           placeholder="Leaving Home, Going to Gym…"
           placeholderTextColor="#94a3b8"
           autoCapitalize="words"
-          className="min-h-[48px] rounded-input border border-slate-700 bg-surface px-3 text-slate-100"
+          className="min-h-[48px] rounded-input border border-slate-200 bg-surface px-3 text-slate-800"
         />
       </View>
 
       <View className="gap-2">
-        <Text className="text-slate-200 font-medium text-sm">
+        <Text className="text-slate-700 font-medium text-sm">
           Linked geofences
         </Text>
         {geofences.length === 0 ? (
-          <Text className="text-slate-400 text-sm">
+          <Text className="text-slate-500 text-sm">
             No geofences yet. Create one in the Geofences tab.
           </Text>
         ) : (
@@ -232,7 +232,7 @@ export function ChecklistForm({
                   accessibilityLabel={`Link to ${g.name}`}
                   onPress={() => toggleGeofence(g.id)}
                   style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
-                  className="flex-row items-center gap-3 px-3 py-2 rounded-card bg-surface border border-slate-700"
+                  className="flex-row items-center gap-3 px-3 py-2 rounded-card bg-surface border border-slate-200"
                 >
                   <View
                     className="w-6 h-6 rounded items-center justify-center"
@@ -240,7 +240,7 @@ export function ChecklistForm({
                       borderWidth: 2,
                       borderColor: selected
                         ? Colors.primary[600]
-                        : Colors.border.dark,
+                        : '#94a3b8',
                       backgroundColor: selected
                         ? Colors.primary[600]
                         : 'transparent',
@@ -251,7 +251,7 @@ export function ChecklistForm({
                     ) : null}
                   </View>
                   <Text
-                    className="text-slate-100 flex-1"
+                    className="text-slate-800 flex-1"
                     numberOfLines={1}
                   >
                     {g.name}
@@ -264,11 +264,11 @@ export function ChecklistForm({
       </View>
 
       <View className="gap-2">
-        <Text className="text-slate-200 font-medium text-sm">Items</Text>
+        <Text className="text-slate-700 font-medium text-sm">Items</Text>
         {state.items.map((item, idx) => (
           <View
             key={item.key}
-            className="flex-row items-center gap-2 bg-surface border border-slate-700 rounded-card px-3 py-2"
+            className="flex-row items-center gap-2 bg-surface border border-slate-200 rounded-card px-3 py-2"
             style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
           >
             <View className="flex-1">
@@ -276,7 +276,7 @@ export function ChecklistForm({
                 accessibilityLabel={`Item ${idx + 1} name`}
                 value={item.name}
                 onChangeText={(t) => renameItem(item.key, t)}
-                className="text-slate-100"
+                className="text-slate-800"
                 placeholder="Item name"
                 placeholderTextColor="#94a3b8"
               />
@@ -285,40 +285,45 @@ export function ChecklistForm({
               accessibilityRole="button"
               accessibilityLabel={`Cycle priority for ${item.name}`}
               onPress={() => cyclePriority(item.key)}
-              className="px-2 py-1 rounded-pill items-center justify-center"
-              style={{
-                backgroundColor: `${PRIORITY_COLOR[item.priority]}33`,
-                minHeight: Config.a11y.MIN_TAP_TARGET,
-              }}
+              style={{ minHeight: Config.a11y.MIN_TAP_TARGET, justifyContent: 'center' }}
             >
+              <View
+                style={{
+                  backgroundColor: `${PRIORITY_COLOR[item.priority]}33`,
+                  paddingHorizontal: 10,
+                  paddingVertical: 4,
+                  borderRadius: 20,
+                }}
+              >
               <Text
                 className="text-xs font-semibold"
                 style={{ color: PRIORITY_COLOR[item.priority] }}
               >
                 {PRIORITY_LABEL[item.priority]}
               </Text>
+              </View>
             </Pressable>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={`Move ${item.name} up`}
               onPress={() => moveItem(item.key, -1)}
               disabled={idx === 0}
-              className="w-9 h-9 items-center justify-center rounded-md bg-slate-700"
+              className="w-9 h-9 items-center justify-center rounded-md bg-slate-200"
               style={{ opacity: idx === 0 ? 0.4 : 1 }}
             >
-              <ArrowUp stroke={Colors.text.dark} size={16} />
+              <ArrowUp stroke={Colors.text.muted} size={16} />
             </Pressable>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={`Move ${item.name} down`}
               onPress={() => moveItem(item.key, 1)}
               disabled={idx === state.items.length - 1}
-              className="w-9 h-9 items-center justify-center rounded-md bg-slate-700"
+              className="w-9 h-9 items-center justify-center rounded-md bg-slate-200"
               style={{
                 opacity: idx === state.items.length - 1 ? 0.4 : 1,
               }}
             >
-              <ArrowDown stroke={Colors.text.dark} size={16} />
+              <ArrowDown stroke={Colors.text.muted} size={16} />
             </Pressable>
             <Pressable
               accessibilityRole="button"
@@ -343,7 +348,7 @@ export function ChecklistForm({
               returnKeyType="done"
               placeholder="Add an item"
               placeholderTextColor="#94a3b8"
-              className="min-h-[48px] rounded-input border border-slate-700 bg-surface px-3 text-slate-100"
+              className="min-h-[48px] rounded-input border border-slate-200 bg-surface px-3 text-slate-800"
             />
           </View>
           <Pressable

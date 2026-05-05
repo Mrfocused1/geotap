@@ -36,8 +36,8 @@ export default function RegisterScreen() {
   return (
     <View className="flex-1 bg-surface-dark px-6 pt-20 pb-10 gap-6">
       <View className="gap-2">
-        <Text className="text-slate-50 text-3xl font-bold">Create account</Text>
-        <Text className="text-slate-400">
+        <Text className="text-slate-900 text-3xl font-bold">Create account</Text>
+        <Text className="text-slate-500">
           Verification email follows in production.
         </Text>
       </View>

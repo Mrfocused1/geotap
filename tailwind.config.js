@@ -19,9 +19,9 @@ module.exports = {
           600: '#dc2626',
         },
         surface: {
-          light: '#f8fafc',
-          DEFAULT: '#1e293b',
-          dark: '#0f172a',
+          light: '#ffffff',
+          DEFAULT: '#ffffff',
+          dark: '#f1f5f9',
         },
       },
       fontFamily: {

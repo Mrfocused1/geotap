@@ -26,7 +26,7 @@ export function Button({
     'min-h-[48px] flex-row items-center justify-center rounded-card px-5';
   const styleByVariant: Record<ButtonVariant, string> = {
     primary: 'bg-primary-600',
-    secondary: 'bg-surface-light dark:bg-surface',
+    secondary: 'bg-surface-light dark:bg-surface border border-slate-200',
     ghost: 'bg-transparent',
   };
   const labelByVariant: Record<ButtonVariant, string> = {

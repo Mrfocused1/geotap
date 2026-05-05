@@ -41,20 +41,20 @@ export function ChecklistCard({
       accessibilityRole="button"
       accessibilityLabel={`Open checklist ${checklist.name}, ${clamped}% complete`}
       onPress={() => onPress(checklist.id)}
-      className="bg-surface dark:bg-surface rounded-card border border-slate-700 overflow-hidden flex-row"
+      className="bg-surface-light rounded-card border border-slate-200 overflow-hidden flex-row"
     >
       <View style={{ width: 6, backgroundColor: indicator }} />
       <View className="flex-1 p-4 gap-2">
         <View className="flex-row items-center gap-2">
           <ListChecks stroke={Colors.primary[600]} size={18} />
           <Text
-            className="text-slate-50 font-semibold text-lg flex-1"
+            className="text-slate-900 font-semibold text-lg flex-1"
             numberOfLines={1}
           >
             {checklist.name}
           </Text>
         </View>
-        <Text className="text-slate-400 text-sm" numberOfLines={1}>
+        <Text className="text-slate-500 text-sm" numberOfLines={1}>
           {linkedLabel}
         </Text>
         <Text className="text-slate-500 text-xs">
@@ -65,7 +65,7 @@ export function ChecklistCard({
           accessibilityRole="progressbar"
           accessibilityValue={{ min: 0, max: 100, now: clamped }}
           accessibilityLabel={`${clamped}% complete`}
-          className="h-1.5 rounded-full bg-slate-700 overflow-hidden mt-1"
+          className="h-1.5 rounded-full bg-slate-200 overflow-hidden mt-1"
         >
           <View
             style={{

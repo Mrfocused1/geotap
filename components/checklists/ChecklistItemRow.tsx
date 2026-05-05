@@ -35,7 +35,7 @@ export function ChecklistItemRow({
     highlightCritical && !checked && item.priority === 'critical';
   const containerClass = isCriticalUnchecked
     ? 'flex-row items-center gap-3 px-4 py-3 rounded-card bg-accent/15 border border-accent/40'
-    : 'flex-row items-center gap-3 px-4 py-3 rounded-card bg-surface border border-slate-700';
+    : 'flex-row items-center gap-3 px-4 py-3 rounded-card bg-surface border border-slate-200';
 
   return (
     <Pressable
@@ -52,7 +52,7 @@ export function ChecklistItemRow({
           borderWidth: 2,
           borderColor: checked
             ? Colors.primary[600]
-            : Colors.border.dark,
+            : '#94a3b8',
           backgroundColor: checked ? Colors.primary[600] : 'transparent',
         }}
       >
@@ -62,7 +62,7 @@ export function ChecklistItemRow({
         <Text
           className="text-base"
           style={{
-            color: checked ? Colors.text.muted : Colors.text.dark,
+            color: checked ? Colors.text.muted : Colors.text.light,
             textDecorationLine: checked ? 'line-through' : 'none',
           }}
           numberOfLines={2}
@@ -71,8 +71,13 @@ export function ChecklistItemRow({
         </Text>
       </View>
       <View
-        className="px-2 py-1 rounded-pill"
-        style={{ backgroundColor: `${PRIORITY_COLOR[item.priority]}33` }}
+        style={{
+          backgroundColor: `${PRIORITY_COLOR[item.priority]}33`,
+          paddingHorizontal: 10,
+          paddingVertical: 4,
+          borderRadius: 20,
+          alignSelf: 'center',
+        }}
       >
         <Text
           className="text-xs font-semibold"

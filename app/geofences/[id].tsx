@@ -101,7 +101,7 @@ export default function EditGeofenceScreen() {
   if (!geofence) {
     return (
       <View className="flex-1 items-center justify-center bg-surface-dark px-6">
-        <Text className="text-slate-100 text-lg">Geofence not found.</Text>
+        <Text className="text-slate-800 text-lg">Geofence not found.</Text>
       </View>
     );
   }

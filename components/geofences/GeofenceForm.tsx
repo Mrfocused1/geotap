@@ -191,16 +191,16 @@ export function GeofenceForm({
         placeholder="Search an address or place"
       />
       {showResults ? (
-        <View className="bg-surface rounded-card border border-slate-700 max-h-56">
+        <View className="bg-white rounded-card border border-slate-200 max-h-56">
           {searching ? (
             <View className="p-4 flex-row items-center gap-2">
               <ActivityIndicator color={Colors.primary[600]} />
-              <Text className="text-slate-300">Searching…</Text>
+              <Text className="text-slate-600">Searching…</Text>
             </View>
           ) : searchError ? (
             <Text className="p-4 text-accent text-sm">{searchError}</Text>
           ) : results.length === 0 ? (
-            <Text className="p-4 text-slate-400 text-sm">No matches.</Text>
+            <Text className="p-4 text-slate-500 text-sm">No matches.</Text>
           ) : (
             <FlatList
               data={results}
@@ -210,9 +210,9 @@ export function GeofenceForm({
                   accessibilityRole="button"
                   accessibilityLabel={`Pick ${item.address}`}
                   onPress={() => onSelectResult(item)}
-                  className="px-4 py-3 border-b border-slate-700"
+                  className="px-4 py-3 border-b border-slate-200"
                 >
-                  <Text className="text-slate-100 text-sm">
+                  <Text className="text-slate-800 text-sm">
                     {item.address}
                   </Text>
                 </Pressable>
@@ -233,7 +233,7 @@ export function GeofenceForm({
       </Pressable>
 
       <View
-        className="rounded-card overflow-hidden border border-slate-700"
+        className="rounded-card overflow-hidden border border-slate-200"
         style={{ height: 280 }}
       >
         <TraceBackMapView ref={mapRef} initialRegion={initialRegion}>

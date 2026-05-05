@@ -23,11 +23,11 @@ export function TextField({
     ? 'border-accent'
     : focused
     ? 'border-primary-600'
-    : 'border-slate-300 dark:border-slate-600';
+    : 'border-slate-300 dark:border-slate-300';
 
   return (
     <View className="gap-1">
-      <Text className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+      <Text className="text-slate-700 dark:text-slate-700 font-medium text-sm">
         {label}
       </Text>
       <TextInput
@@ -39,7 +39,7 @@ export function TextField({
         secureTextEntry={secureTextEntry}
         autoCapitalize="none"
         autoCorrect={false}
-        className={`min-h-[48px] rounded-input border bg-white dark:bg-slate-800 px-4 text-slate-900 dark:text-slate-100 ${borderClass}`}
+        className={`min-h-[48px] rounded-input border bg-white dark:bg-slate-100 px-4 text-slate-900 dark:text-slate-800 ${borderClass}`}
         placeholderTextColor="#94a3b8"
         {...rest}
       />

@@ -109,7 +109,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(onboarding)" />
         <Stack.Screen name="(auth)" />
@@ -139,7 +139,7 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="checklists/[id]"
+          name="checklists/[id]/index"
           options={{
             headerShown: true,
             headerTitle: 'Checklist',

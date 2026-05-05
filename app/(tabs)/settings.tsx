@@ -40,7 +40,7 @@ function PermissionPill({ status }: { status: PermStatus }) {
 
 function SectionHeader({ title }: { title: string }) {
   return (
-    <Text className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-4 mb-2 px-1">
+    <Text className="text-slate-500 text-xs font-semibold uppercase tracking-wider mt-4 mb-2 px-1">
       {title}
     </Text>
   );
@@ -105,18 +105,18 @@ export default function SettingsScreen() {
       contentContainerStyle={{ padding: 24, paddingBottom: 64 }}
     >
       <View className="pt-12 pb-4">
-        <Text className="text-slate-50 text-3xl font-bold">Settings</Text>
+        <Text className="text-slate-900 text-3xl font-bold">Settings</Text>
       </View>
 
       {/* Profile */}
       <SectionHeader title="Profile" />
-      <View className="bg-surface rounded-card border border-slate-700 overflow-hidden">
+      <View className="bg-surface rounded-card border border-slate-200 overflow-hidden">
         <View
-          className="flex-row items-center px-4 border-b border-slate-700"
+          className="flex-row items-center px-4 border-b border-slate-200"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-400 w-20 text-sm">Name</Text>
-          <Text className="text-slate-100 flex-1">
+          <Text className="text-slate-500 w-20 text-sm">Name</Text>
+          <Text className="text-slate-800 flex-1">
             {user?.displayName ?? '—'}
           </Text>
         </View>
@@ -124,8 +124,8 @@ export default function SettingsScreen() {
           className="flex-row items-center px-4"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-400 w-20 text-sm">Email</Text>
-          <Text className="text-slate-100 flex-1" numberOfLines={1}>
+          <Text className="text-slate-500 w-20 text-sm">Email</Text>
+          <Text className="text-slate-800 flex-1" numberOfLines={1}>
             {user?.email ?? '—'}
           </Text>
         </View>
@@ -133,16 +133,16 @@ export default function SettingsScreen() {
 
       {/* Notifications */}
       <SectionHeader title="Notifications" />
-      <View className="bg-surface rounded-card border border-slate-700 overflow-hidden">
+      <View className="bg-surface rounded-card border border-slate-200 overflow-hidden">
         <View
           className="flex-row items-center justify-between px-4"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-100">Notifications enabled</Text>
+          <Text className="text-slate-800">Notifications enabled</Text>
           <Switch
             value={notifEnabled}
             onValueChange={setNotifEnabled}
-            trackColor={{ false: '#334155', true: Colors.primary[600] }}
+            trackColor={{ false: Colors.border.light, true: Colors.primary[600] }}
             thumbColor="#ffffff"
             accessibilityLabel="Toggle notifications"
           />
@@ -151,21 +151,21 @@ export default function SettingsScreen() {
 
       {/* Permissions */}
       <SectionHeader title="Permissions" />
-      <View className="bg-surface rounded-card border border-slate-700 overflow-hidden">
+      <View className="bg-surface rounded-card border border-slate-200 overflow-hidden">
         <View
-          className="flex-row items-center justify-between px-4 border-b border-slate-700"
+          className="flex-row items-center justify-between px-4 border-b border-slate-200"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-100">Location</Text>
+          <Text className="text-slate-800">Location</Text>
           <View className="flex-row items-center gap-2">
             <PermissionPill status={locationStatus} />
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Open location settings"
               onPress={openSystemSettings}
-              className="px-3 py-1 rounded-pill bg-slate-700"
+              className="px-3 py-1 rounded-pill bg-slate-200"
             >
-              <Text className="text-slate-300 text-xs">Settings</Text>
+              <Text className="text-slate-600 text-xs">Settings</Text>
             </Pressable>
           </View>
         </View>
@@ -173,16 +173,16 @@ export default function SettingsScreen() {
           className="flex-row items-center justify-between px-4"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-100">Notifications</Text>
+          <Text className="text-slate-800">Notifications</Text>
           <View className="flex-row items-center gap-2">
             <PermissionPill status={notifPermission} />
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Open notification settings"
               onPress={openSystemSettings}
-              className="px-3 py-1 rounded-pill bg-slate-700"
+              className="px-3 py-1 rounded-pill bg-slate-200"
             >
-              <Text className="text-slate-300 text-xs">Settings</Text>
+              <Text className="text-slate-600 text-xs">Settings</Text>
             </Pressable>
           </View>
         </View>
@@ -190,13 +190,13 @@ export default function SettingsScreen() {
 
       {/* App */}
       <SectionHeader title="App" />
-      <View className="bg-surface rounded-card border border-slate-700 overflow-hidden">
+      <View className="bg-surface rounded-card border border-slate-200 overflow-hidden">
         <View
           className="flex-row items-center justify-between px-4"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-100">Version</Text>
-          <Text className="text-slate-400 text-sm">{appVersion}</Text>
+          <Text className="text-slate-800">Version</Text>
+          <Text className="text-slate-500 text-sm">{appVersion}</Text>
         </View>
       </View>
 
@@ -207,37 +207,37 @@ export default function SettingsScreen() {
           accessibilityRole="button"
           accessibilityLabel="Privacy Policy"
           onPress={() => undefined}
-          className="bg-surface rounded-card border border-slate-700 px-4 flex-row items-center justify-between"
+          className="bg-surface rounded-card border border-slate-200 px-4 flex-row items-center justify-between"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-100">Privacy Policy</Text>
+          <Text className="text-slate-800">Privacy Policy</Text>
           <Text className="text-slate-500 text-lg">›</Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Terms of Service"
           onPress={() => undefined}
-          className="bg-surface rounded-card border border-slate-700 px-4 flex-row items-center justify-between"
+          className="bg-surface rounded-card border border-slate-200 px-4 flex-row items-center justify-between"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-100">Terms of Service</Text>
+          <Text className="text-slate-800">Terms of Service</Text>
           <Text className="text-slate-500 text-lg">›</Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Sign out"
           onPress={confirmSignOut}
-          className="bg-surface rounded-card border border-slate-700 px-4 flex-row items-center justify-between"
+          className="bg-surface rounded-card border border-slate-200 px-4 flex-row items-center justify-between"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
-          <Text className="text-slate-100">Sign out</Text>
+          <Text className="text-slate-800">Sign out</Text>
           <Text className="text-slate-500 text-lg">›</Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Delete account"
           onPress={confirmDeleteAccount}
-          className="bg-surface rounded-card border border-slate-700 px-4 flex-row items-center justify-between"
+          className="bg-surface rounded-card border border-slate-200 px-4 flex-row items-center justify-between"
           style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
         >
           <Text style={{ color: Colors.accent.DEFAULT }}>Delete account</Text>

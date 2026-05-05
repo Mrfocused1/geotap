@@ -200,7 +200,7 @@ export default function ChecklistRunScreen() {
   if (!checklist) {
     return (
       <View className="flex-1 items-center justify-center bg-surface-dark px-6">
-        <Text className="text-slate-100 text-lg">
+        <Text className="text-slate-800 text-lg">
           Checklist not found.
         </Text>
       </View>
@@ -215,11 +215,11 @@ export default function ChecklistRunScreen() {
       contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 96 }}
     >
       <View className="gap-1">
-        <Text className="text-slate-50 text-2xl font-bold" numberOfLines={2}>
+        <Text className="text-slate-900 text-2xl font-bold" numberOfLines={2}>
           {checklist.name}
         </Text>
         {checklist.description ? (
-          <Text className="text-slate-400 text-sm">
+          <Text className="text-slate-500 text-sm">
             {checklist.description}
           </Text>
         ) : null}
@@ -230,7 +230,7 @@ export default function ChecklistRunScreen() {
         accessibilityRole="progressbar"
         accessibilityValue={{ min: 0, max: 100, now: progressPct }}
         accessibilityLabel={`${progressPct}% complete`}
-        className="h-2 rounded-full bg-slate-700 overflow-hidden"
+        className="h-2 rounded-full bg-slate-200 overflow-hidden"
       >
         <View
           style={{
@@ -240,7 +240,7 @@ export default function ChecklistRunScreen() {
           }}
         />
       </View>
-      <Text className="text-slate-300 text-sm">
+      <Text className="text-slate-600 text-sm">
         {checkedCount} of {total} checked ({progressPct}%)
       </Text>
 
@@ -272,14 +272,14 @@ export default function ChecklistRunScreen() {
           />
         ))}
         {sortedItems.length === 0 ? (
-          <Text className="text-slate-400 text-sm text-center mt-2">
+          <Text className="text-slate-500 text-sm text-center mt-2">
             This checklist has no items yet. Tap Edit to add some.
           </Text>
         ) : null}
       </View>
 
       <View className="gap-2">
-        <Text className="text-slate-200 font-medium text-sm">
+        <Text className="text-slate-700 font-medium text-sm">
           Snooze
         </Text>
         <View className="flex-row gap-2 flex-wrap">
@@ -289,12 +289,13 @@ export default function ChecklistRunScreen() {
               accessibilityRole="button"
               accessibilityLabel={`Snooze for ${m} minutes`}
               onPress={() => onSnooze(m)}
-              className="px-3 py-2 rounded-pill bg-surface border border-slate-700"
-              style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
+              style={{ minHeight: Config.a11y.MIN_TAP_TARGET, justifyContent: 'center' }}
             >
-              <Text className="text-slate-100 text-sm font-medium">
-                {m < 60 ? `${m}m` : `${m / 60}h`}
-              </Text>
+              <View className="px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-600/30">
+                <Text className="text-primary-700 text-sm font-semibold">
+                  {m < 60 ? `${m}m` : `${m / 60}h`}
+                </Text>
+              </View>
             </Pressable>
           ))}
         </View>

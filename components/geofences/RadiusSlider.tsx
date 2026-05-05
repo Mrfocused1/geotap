@@ -20,7 +20,7 @@ export function RadiusSlider({ value, onChange }: Props) {
   return (
     <View className="gap-2">
       <View className="flex-row justify-between">
-        <Text className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+        <Text className="text-slate-700 dark:text-slate-700 font-medium text-sm">
           Radius
         </Text>
         <Text

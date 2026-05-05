@@ -91,7 +91,7 @@ export default function GeofencesScreen() {
   return (
     <View className="flex-1 bg-surface-dark">
       <View className="px-6 pt-16 pb-3 flex-row items-center justify-between">
-        <Text className="text-slate-50 text-3xl font-bold">Geofences</Text>
+        <Text className="text-slate-900 text-3xl font-bold">Geofences</Text>
         <View className="flex-row bg-surface rounded-pill p-1">
           <Pressable
             accessibilityRole="button"
@@ -109,7 +109,7 @@ export default function GeofencesScreen() {
               className={
                 mode === 'map'
                   ? 'text-white text-sm font-semibold'
-                  : 'text-slate-400 text-sm'
+                  : 'text-slate-500 text-sm'
               }
             >
               Map
@@ -131,7 +131,7 @@ export default function GeofencesScreen() {
               className={
                 mode === 'list'
                   ? 'text-white text-sm font-semibold'
-                  : 'text-slate-400 text-sm'
+                  : 'text-slate-500 text-sm'
               }
             >
               List
@@ -177,7 +177,7 @@ export default function GeofencesScreen() {
           refreshing={isLoading}
           onRefresh={() => user && loadGeofences(user.id)}
           ListEmptyComponent={
-            <Text className="text-slate-400 text-center mt-12">
+            <Text className="text-slate-500 text-center mt-12">
               No geofences yet. Tap + to add your first.
             </Text>
           }
