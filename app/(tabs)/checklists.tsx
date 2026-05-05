@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -55,11 +55,18 @@ export default function ChecklistsScreen() {
   const [query, setQuery] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('updated');
 
+  const hasFetchedGeofences = useRef(false);
+
   useEffect(() => {
     if (!user) return;
     loadChecklists(user.id);
-    if (geofences.length === 0) loadGeofences(user.id);
-  }, [user, loadChecklists, loadGeofences, geofences.length]);
+  }, [user, loadChecklists]);
+
+  useEffect(() => {
+    if (!user || hasFetchedGeofences.current) return;
+    hasFetchedGeofences.current = true;
+    loadGeofences(user.id);
+  }, [user, loadGeofences]);
 
   const filteredSorted = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -74,17 +81,33 @@ export default function ChecklistsScreen() {
     return sortChecklists(filtered, sortMode);
   }, [checklists, query, sortMode]);
 
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     if (!user) {
       Alert.alert('Not signed in', 'Please sign in to create a checklist.');
       return;
     }
     router.push('/checklists/create');
-  };
+  }, [user, router]);
 
-  const onOpen = (id: string) => {
+  const onOpen = useCallback((id: string) => {
     router.push(`/checklists/${id}`);
-  };
+  }, [router]);
+
+  const onRefresh = useCallback(() => {
+    if (user) loadChecklists(user.id);
+  }, [user, loadChecklists]);
+
+  const renderItem = useCallback(
+    ({ item }: { item: Checklist }) => (
+      <ChecklistCard
+        checklist={item}
+        geofences={geofences}
+        progressPct={0} // TODO: wire active session progress in Plan 4
+        onPress={onOpen}
+      />
+    ),
+    [geofences, onOpen]
+  );
 
   return (
     <View className="flex-1 bg-surface-dark">
@@ -110,7 +133,8 @@ export default function ChecklistsScreen() {
           {SORTS.map((s) => (
             <Pressable
               key={s.id}
-              accessibilityRole="button"
+              accessibilityRole="radio"
+              accessibilityState={{ checked: sortMode === s.id }}
               accessibilityLabel={`Sort by ${s.label}`}
               onPress={() => setSortMode(s.id)}
               className={`px-3 py-2 rounded-pill ${
@@ -140,22 +164,16 @@ export default function ChecklistsScreen() {
           gap: 12,
         }}
         refreshing={isLoading}
-        onRefresh={() => user && loadChecklists(user.id)}
+        onRefresh={onRefresh}
+        keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Text className="text-slate-400 text-center mt-12">
-            {query.length > 0
+            {query.trim().length > 0
               ? 'No checklists match your search.'
               : 'No checklists yet. Tap + to create one.'}
-        </Text>
+          </Text>
         }
-        renderItem={({ item }) => (
-          <ChecklistCard
-            checklist={item}
-            geofences={geofences}
-            progressPct={0}
-            onPress={onOpen}
-          />
-        )}
+        renderItem={renderItem}
       />
 
       <Pressable
