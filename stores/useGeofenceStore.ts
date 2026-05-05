@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
+import { Config } from '@/constants/config';
 import { geofenceService } from '@/services';
 import type { Geofence, GeofenceInput } from '@/types/geofence';
 
@@ -54,6 +56,10 @@ export const useGeofenceStore = create<GeofenceState>((set, get) => ({
     try {
       const geofences = await geofenceService.listForUser(userId);
       set({ geofences, isLoading: false });
+      AsyncStorage.setItem(
+        Config.storage.GEOFENCE_CACHE_KEY,
+        JSON.stringify(geofences)
+      ).catch(() => undefined);
     } catch (e) {
       set({
         isLoading: false,

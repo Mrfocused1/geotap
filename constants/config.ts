@@ -17,6 +17,8 @@ export const Config = {
     SESSION_KEY: '@traceback/session',
     ACTIVE_SESSION_KEY: '@traceback/active-session',
     ONBOARDING_KEY: '@traceback/onboarding-complete',
+    GEOFENCE_CACHE_KEY: '@traceback/geofence-cache',
+    CHECKLIST_CACHE_KEY: '@traceback/checklist-cache',
   },
   tasks: {
     GEOFENCE_TASK: 'GEOFENCE_TASK',

@@ -8,6 +8,23 @@ jest.mock('@/services', () => ({
   geofenceService: require('@/services/mock/mockGeofenceService').mockGeofenceService,
 }));
 
+jest.mock('@react-native-async-storage/async-storage', () => {
+  const mem = new Map<string, string>();
+  return {
+    __esModule: true,
+    default: {
+      getItem: jest.fn(async (k: string) => mem.get(k) ?? null),
+      setItem: jest.fn(async (k: string, v: string) => {
+        mem.set(k, v);
+      }),
+      removeItem: jest.fn(async (k: string) => {
+        mem.delete(k);
+      }),
+      __mem: mem,
+    },
+  };
+});
+
 describe('useGeofenceStore', () => {
   beforeEach(() => {
     useGeofenceStore.setState({

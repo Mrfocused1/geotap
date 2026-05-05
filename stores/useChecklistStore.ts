@@ -186,6 +186,10 @@ export const useChecklistStore = create<ChecklistState>((set, get) => ({
     try {
       const checklists = await checklistService.listForUser(userId);
       set({ checklists, isLoading: false });
+      AsyncStorage.setItem(
+        Config.storage.CHECKLIST_CACHE_KEY,
+        JSON.stringify(checklists)
+      ).catch(() => undefined);
     } catch (e) {
       set({
         isLoading: false,
