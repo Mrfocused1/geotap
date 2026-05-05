@@ -285,9 +285,10 @@ export function ChecklistForm({
               accessibilityRole="button"
               accessibilityLabel={`Cycle priority for ${item.name}`}
               onPress={() => cyclePriority(item.key)}
-              className="px-2 py-1 rounded-pill"
+              className="px-2 py-1 rounded-pill items-center justify-center"
               style={{
                 backgroundColor: `${PRIORITY_COLOR[item.priority]}33`,
+                minHeight: Config.a11y.MIN_TAP_TARGET,
               }}
             >
               <Text
