@@ -31,6 +31,10 @@ export default function EditChecklistScreen() {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    if (fromStore && !checklist) setChecklist(fromStore);
+  }, [fromStore, checklist]);
+
+  useEffect(() => {
     if (fromStore || typeof id !== 'string') return;
     let cancelled = false;
     setLoading(true);
