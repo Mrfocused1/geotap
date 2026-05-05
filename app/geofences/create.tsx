@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as Location from 'expo-location';
 import { GeofenceForm } from '@/components/geofences/GeofenceForm';
+import { Config } from '@/constants/config';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useGeofenceStore } from '@/stores/useGeofenceStore';
 import { useNotificationStore } from '@/stores/useNotificationStore';
@@ -11,6 +12,7 @@ export default function CreateGeofenceScreen() {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const createGeofence = useGeofenceStore((s) => s.createGeofence);
+  const geofences = useGeofenceStore((s) => s.geofences);
   const [submitting, setSubmitting] = useState(false);
   const requestNotificationPermissions = useNotificationStore(
     (s) => s.requestPermissions
@@ -21,6 +23,13 @@ export default function CreateGeofenceScreen() {
   const handleSubmit = async (input: GeofenceInput) => {
     if (!user) {
       Alert.alert('Not signed in', 'Please sign in to save a geofence.');
+      return;
+    }
+    if (geofences.length >= Config.geofence.MAX_GEOFENCES) {
+      Alert.alert(
+        'Geofence limit reached',
+        `You can have at most ${Config.geofence.MAX_GEOFENCES} geofences (iOS limit).`
+      );
       return;
     }
 
