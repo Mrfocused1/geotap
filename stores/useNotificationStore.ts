@@ -1,25 +1,33 @@
+import * as Notifications from 'expo-notifications';
 import { create } from 'zustand';
 
-export type PermissionStatus = 'unknown' | 'granted' | 'denied' | 'undetermined';
+type PermissionStatus = 'granted' | 'denied' | 'undetermined';
 
 type NotificationState = {
-  locationPermission: PermissionStatus;
-  notificationPermission: PermissionStatus;
-  backgroundRefreshAvailable: boolean | null;
-
-  setLocationPermission: (status: PermissionStatus) => void;
-  setNotificationPermission: (status: PermissionStatus) => void;
-  setBackgroundRefreshAvailable: (available: boolean | null) => void;
+  permissionStatus: PermissionStatus;
+  checkPermissions: () => Promise<void>;
+  requestPermissions: () => Promise<boolean>;
 };
 
 export const useNotificationStore = create<NotificationState>((set) => ({
-  locationPermission: 'unknown',
-  notificationPermission: 'unknown',
-  backgroundRefreshAvailable: null,
+  permissionStatus: 'undetermined',
 
-  setLocationPermission: (locationPermission) => set({ locationPermission }),
-  setNotificationPermission: (notificationPermission) =>
-    set({ notificationPermission }),
-  setBackgroundRefreshAvailable: (backgroundRefreshAvailable) =>
-    set({ backgroundRefreshAvailable }),
+  checkPermissions: async () => {
+    const { status } = await Notifications.getPermissionsAsync();
+    set({
+      permissionStatus:
+        status === 'granted'
+          ? 'granted'
+          : status === 'denied'
+          ? 'denied'
+          : 'undetermined',
+    });
+  },
+
+  requestPermissions: async () => {
+    const { status } = await Notifications.requestPermissionsAsync();
+    const granted = status === 'granted';
+    set({ permissionStatus: granted ? 'granted' : 'denied' });
+    return granted;
+  },
 }));
