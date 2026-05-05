@@ -78,6 +78,8 @@ export default function ChecklistRunScreen() {
       typeof geofenceId === 'string' && geofenceId.length > 0
         ? geofenceId
         : checklist.geofenceIds[0] ?? 'gf-unknown';
+    // getState() used (not reactive selector) because we only need a one-time
+    // snapshot to decide whether to call startSession — not a subscription.
     const session = useChecklistStore.getState().activeSession;
     if (!session || session.checklistId !== id) {
       startSession({
@@ -180,10 +182,8 @@ export default function ChecklistRunScreen() {
           delayMinutes: minutes,
         })
         .catch(() => undefined);
-      Alert.alert(
-        'Snoozed',
-        `We will remind you again in ${minutes} minutes.`
-      );
+      const label = minutes < 60 ? `${minutes} minutes` : `${minutes / 60} hour`;
+      Alert.alert('Snoozed', `We will remind you again in ${label}.`);
       router.back();
     },
     [checklist, activeSession, router]
