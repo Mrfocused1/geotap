@@ -14,11 +14,16 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Config } from '@/constants/config';
 import { registerGeofenceTask } from '@/services/geofenceTask';
+import { setupNotifications } from '@/services/notificationService';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useChecklistStore } from '@/stores/useChecklistStore';
+import { useGeofenceMonitor } from '@/hooks/useGeofenceMonitor';
+import { useNotificationHandler } from '@/hooks/useNotificationHandler';
+import { useNotificationStore } from '@/stores/useNotificationStore';
 
 // Register the background task ASAP (must happen at module load on iOS).
 registerGeofenceTask();
+setupNotifications().catch(() => undefined);
 
 function useAuthRouting(onboardingComplete: boolean | null) {
   const segments = useSegments();
@@ -61,6 +66,11 @@ export default function RootLayout() {
   const hydrate = useAuthStore((s) => s.hydrate);
   const status = useAuthStore((s) => s.status);
   const restoreSession = useChecklistStore((s) => s.restoreSession);
+  const checkPermissions = useNotificationStore((s) => s.checkPermissions);
+
+  // Wire monitoring and deep-link hooks
+  useNotificationHandler();
+  useGeofenceMonitor(status === 'authenticated');
 
   const [onboardingComplete, setOnboardingComplete] = useState<
     boolean | null
@@ -76,10 +86,11 @@ export default function RootLayout() {
   useEffect(() => {
     hydrate();
     restoreSession().catch(() => undefined);
+    checkPermissions().catch(() => undefined);
     AsyncStorage.getItem(Config.storage.ONBOARDING_KEY).then((v) => {
       setOnboardingComplete(v === 'true');
     });
-  }, [hydrate, restoreSession]);
+  }, [hydrate, restoreSession, checkPermissions]);
 
   useAuthRouting(onboardingComplete);
 
