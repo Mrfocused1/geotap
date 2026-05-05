@@ -56,7 +56,7 @@ export function GeofenceCard({
           accessibilityRole="button"
           accessibilityLabel={`Edit ${geofence.name}`}
           onPress={() => onEdit(geofence.id)}
-          className="flex-1 min-h-[44px] flex-row items-center justify-center gap-2 rounded-input bg-slate-700"
+          className="flex-1 min-h-[48px] flex-row items-center justify-center gap-2 rounded-input bg-slate-700"
         >
           <Pencil stroke={Colors.text.dark} size={16} />
           <Text className="text-slate-100 font-medium">Edit</Text>
@@ -65,7 +65,7 @@ export function GeofenceCard({
           accessibilityRole="button"
           accessibilityLabel={`Delete ${geofence.name}`}
           onPress={() => onDelete(geofence.id)}
-          className="flex-1 min-h-[44px] flex-row items-center justify-center gap-2 rounded-input bg-accent/20"
+          className="flex-1 min-h-[48px] flex-row items-center justify-center gap-2 rounded-input bg-accent/20"
         >
           <Trash2 stroke={Colors.accent.DEFAULT} size={16} />
           <Text className="text-accent font-medium">Delete</Text>

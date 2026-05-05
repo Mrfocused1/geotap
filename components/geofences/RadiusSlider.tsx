@@ -24,6 +24,7 @@ export function RadiusSlider({ value, onChange }: Props) {
           Radius
         </Text>
         <Text
+          accessible={true}
           accessibilityLabel={`Radius ${formatRadius(value)}`}
           className="text-primary-600 font-semibold text-sm"
         >
