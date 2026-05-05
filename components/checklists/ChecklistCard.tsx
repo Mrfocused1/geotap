@@ -1,0 +1,77 @@
+import { Pressable, Text, View } from 'react-native';
+import { ListChecks } from 'lucide-react-native';
+import { Colors } from '@/constants/colors';
+import type { Checklist } from '@/types/checklist';
+import type { Geofence } from '@/types/geofence';
+
+type Props = {
+  checklist: Checklist;
+  geofences: Geofence[];
+  progressPct?: number;
+  onPress: (id: string) => void;
+};
+
+function pickIndicatorColor(checklist: Checklist): string {
+  const hasCritical = checklist.items.some((i) => i.priority === 'critical');
+  if (hasCritical) return Colors.accent.DEFAULT;
+  return Colors.primary[600];
+}
+
+export function ChecklistCard({
+  checklist,
+  geofences,
+  progressPct = 0,
+  onPress,
+}: Props) {
+  const linkedNames = checklist.geofenceIds
+    .map((gid) => geofences.find((g) => g.id === gid)?.name)
+    .filter((n): n is string => Boolean(n));
+  const linkedLabel =
+    linkedNames.length === 0
+      ? 'No geofences linked'
+      : linkedNames.join(' · ');
+  const itemCount = checklist.items.length;
+  const indicator = pickIndicatorColor(checklist);
+  const clamped = Math.max(0, Math.min(100, Math.round(progressPct)));
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Open checklist ${checklist.name}`}
+      onPress={() => onPress(checklist.id)}
+      className="bg-surface dark:bg-surface rounded-card border border-slate-700 overflow-hidden flex-row"
+    >
+      <View style={{ width: 6, backgroundColor: indicator }} />
+      <View className="flex-1 p-4 gap-2">
+        <View className="flex-row items-center gap-2">
+          <ListChecks stroke={Colors.primary[600]} size={18} />
+          <Text
+            className="text-slate-50 font-semibold text-lg flex-1"
+            numberOfLines={1}
+          >
+            {checklist.name}
+          </Text>
+        </View>
+        <Text className="text-slate-400 text-sm" numberOfLines={1}>
+          {linkedLabel}
+        </Text>
+        <Text className="text-slate-500 text-xs">
+          {itemCount} item{itemCount === 1 ? '' : 's'}
+        </Text>
+        <View
+          accessibilityRole="progressbar"
+          accessibilityValue={{ min: 0, max: 100, now: clamped }}
+          className="h-1.5 rounded-full bg-slate-700 overflow-hidden mt-1"
+        >
+          <View
+            style={{
+              width: `${clamped}%`,
+              height: '100%',
+              backgroundColor: Colors.primary[600],
+            }}
+          />
+        </View>
+      </View>
+    </Pressable>
+  );
+}
