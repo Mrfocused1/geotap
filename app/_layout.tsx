@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Config } from '@/constants/config';
 import { registerGeofenceTask } from '@/services/geofenceTask';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useChecklistStore } from '@/stores/useChecklistStore';
 
 // Register the background task ASAP (must happen at module load on iOS).
 registerGeofenceTask();
@@ -32,8 +33,14 @@ function useAuthRouting(onboardingComplete: boolean | null) {
     const inAuth = segments[0] === '(auth)';
     const inTabs = segments[0] === '(tabs)';
     const inGeofences = segments[0] === 'geofences';
+    const inChecklists = segments[0] === 'checklists';
 
-    if (status === 'authenticated' && !inTabs && !inGeofences) {
+    if (
+      status === 'authenticated' &&
+      !inTabs &&
+      !inGeofences &&
+      !inChecklists
+    ) {
       router.replace('/(tabs)');
       return;
     }
@@ -53,10 +60,11 @@ function useAuthRouting(onboardingComplete: boolean | null) {
 export default function RootLayout() {
   const hydrate = useAuthStore((s) => s.hydrate);
   const status = useAuthStore((s) => s.status);
+  const restoreSession = useChecklistStore((s) => s.restoreSession);
 
-  const [onboardingComplete, setOnboardingComplete] = useState<boolean | null>(
-    null
-  );
+  const [onboardingComplete, setOnboardingComplete] = useState<
+    boolean | null
+  >(null);
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -67,10 +75,11 @@ export default function RootLayout() {
 
   useEffect(() => {
     hydrate();
+    restoreSession().catch(() => undefined);
     AsyncStorage.getItem(Config.storage.ONBOARDING_KEY).then((v) => {
       setOnboardingComplete(v === 'true');
     });
-  }, [hydrate]);
+  }, [hydrate, restoreSession]);
 
   useAuthRouting(onboardingComplete);
 
@@ -107,6 +116,30 @@ export default function RootLayout() {
           options={{
             headerShown: true,
             headerTitle: 'Edit Geofence',
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="checklists/create"
+          options={{
+            headerShown: true,
+            headerTitle: 'New Checklist',
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="checklists/[id]"
+          options={{
+            headerShown: true,
+            headerTitle: 'Checklist',
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="checklists/[id]/edit"
+          options={{
+            headerShown: true,
+            headerTitle: 'Edit Checklist',
             presentation: 'modal',
           }}
         />
