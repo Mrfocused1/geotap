@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { ListChecks } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
@@ -23,6 +24,7 @@ export function ChecklistCard({
   progressPct = 0,
   onPress,
 }: Props) {
+  const [barWidth, setBarWidth] = useState(0);
   const linkedNames = checklist.geofenceIds
     .map((gid) => geofences.find((g) => g.id === gid)?.name)
     .filter((n): n is string => Boolean(n));
@@ -37,7 +39,7 @@ export function ChecklistCard({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`Open checklist ${checklist.name}`}
+      accessibilityLabel={`Open checklist ${checklist.name}, ${clamped}% complete`}
       onPress={() => onPress(checklist.id)}
       className="bg-surface dark:bg-surface rounded-card border border-slate-700 overflow-hidden flex-row"
     >
@@ -59,13 +61,15 @@ export function ChecklistCard({
           {itemCount} item{itemCount === 1 ? '' : 's'}
         </Text>
         <View
+          onLayout={(e) => setBarWidth(e.nativeEvent.layout.width)}
           accessibilityRole="progressbar"
           accessibilityValue={{ min: 0, max: 100, now: clamped }}
+          accessibilityLabel={`${clamped}% complete`}
           className="h-1.5 rounded-full bg-slate-700 overflow-hidden mt-1"
         >
           <View
             style={{
-              width: `${clamped}%`,
+              width: barWidth * (clamped / 100),
               height: '100%',
               backgroundColor: Colors.primary[600],
             }}

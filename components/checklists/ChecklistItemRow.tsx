@@ -11,19 +11,19 @@ type Props = {
   highlightCritical?: boolean;
 };
 
-const PRIORITY_LABEL: Record<ItemPriority, string> = {
+const PRIORITY_LABEL = {
   critical: 'Critical',
   high: 'High',
   medium: 'Medium',
   low: 'Low',
-};
+} satisfies Record<ItemPriority, string>;
 
-const PRIORITY_COLOR: Record<ItemPriority, string> = {
+const PRIORITY_COLOR = {
   critical: Colors.accent.DEFAULT,
   high: '#f59e0b',
   medium: Colors.primary[600],
   low: Colors.text.muted,
-};
+} satisfies Record<ItemPriority, string>;
 
 export function ChecklistItemRow({
   item,
