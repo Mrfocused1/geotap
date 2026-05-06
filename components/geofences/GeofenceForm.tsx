@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  FlatList,
   Pressable,
   ScrollView,
   Text,
@@ -184,43 +183,65 @@ export function GeofenceForm({
       contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 64 }}
       keyboardShouldPersistTaps="handled"
     >
-      <TextField
-        label="Address"
-        value={state.address}
-        onChangeText={onAddressChange}
-        placeholder="Search an address or place"
-      />
-      {showResults ? (
-        <View className="bg-white rounded-card border border-slate-200 max-h-56">
-          {searching ? (
-            <View className="p-4 flex-row items-center gap-2">
-              <ActivityIndicator color={Colors.primary[600]} />
-              <Text className="text-slate-600">Searching…</Text>
-            </View>
-          ) : searchError ? (
-            <Text className="p-4 text-accent text-sm">{searchError}</Text>
-          ) : results.length === 0 ? (
-            <Text className="p-4 text-slate-500 text-sm">No matches.</Text>
-          ) : (
-            <FlatList
-              data={results}
-              keyExtractor={(r, i) => `${r.latitude},${r.longitude},${i}`}
-              renderItem={({ item }) => (
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel={`Pick ${item.address}`}
-                  onPress={() => onSelectResult(item)}
-                  className="px-4 py-3 border-b border-slate-200"
-                >
-                  <Text className="text-slate-800 text-sm">
-                    {item.address}
-                  </Text>
-                </Pressable>
-              )}
-            />
-          )}
-        </View>
-      ) : null}
+      <View style={{ zIndex: 10 }}>
+        <TextField
+          label="Address"
+          value={state.address}
+          onChangeText={onAddressChange}
+          placeholder="Search an address or place"
+        />
+        {showResults ? (
+          <View
+            style={{
+              position: 'absolute',
+              top: 74,
+              left: 0,
+              right: 0,
+              maxHeight: 224,
+              backgroundColor: '#ffffff',
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: '#e2e8f0',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.12,
+              shadowRadius: 8,
+              elevation: 8,
+              zIndex: 10,
+            }}
+          >
+            {searching ? (
+              <View className="p-4 flex-row items-center gap-2">
+                <ActivityIndicator color={Colors.primary[600]} />
+                <Text className="text-slate-600">Searching…</Text>
+              </View>
+            ) : searchError ? (
+              <Text className="p-4 text-accent text-sm">{searchError}</Text>
+            ) : results.length === 0 ? (
+              <Text className="p-4 text-slate-500 text-sm">No matches.</Text>
+            ) : (
+              <ScrollView
+                keyboardShouldPersistTaps="handled"
+                bounces={false}
+              >
+                {results.map((item, i) => (
+                  <Pressable
+                    key={`${item.latitude},${item.longitude},${i}`}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Pick ${item.address}`}
+                    onPress={() => onSelectResult(item)}
+                    className="px-4 py-3 border-b border-slate-100"
+                  >
+                    <Text className="text-slate-800 text-sm">
+                      {item.address}
+                    </Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            )}
+          </View>
+        ) : null}
+      </View>
 
       <Pressable
         accessibilityRole="button"
