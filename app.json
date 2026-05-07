@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Trace Back",
-    "slug": "trace-back",
+    "name": "Memo Push",
+    "slug": "memo-push",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "traceback",
+    "scheme": "memopush",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -15,11 +15,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.traceback.app",
+      "bundleIdentifier": "com.memopush.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Trace Back uses your location to detect when you leave a saved place so it can remind you of your checklist.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Trace Back monitors saved geofences in the background to remind you of items you might have forgotten when leaving.",
-        "NSLocationAlwaysUsageDescription": "Trace Back monitors saved geofences in the background to remind you of items you might have forgotten when leaving.",
+        "NSLocationWhenInUseUsageDescription": "Memo Push uses your location to detect when you leave a saved place so it can remind you of your checklist.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Memo Push monitors saved geofences in the background to remind you of items you might have forgotten when leaving.",
+        "NSLocationAlwaysUsageDescription": "Memo Push monitors saved geofences in the background to remind you of items you might have forgotten when leaving.",
         "UIBackgroundModes": ["location", "fetch"]
       }
     },
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0f172a"
       },
-      "package": "com.traceback.app",
+      "package": "com.memopush.app",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -47,7 +47,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Trace Back uses your location to detect when you leave a saved place so it can remind you of your checklist.",
+          "locationAlwaysAndWhenInUsePermission": "Memo Push uses your location to detect when you leave a saved place so it can remind you of your checklist.",
           "isIosBackgroundLocationEnabled": true,
           "isAndroidBackgroundLocationEnabled": true
         }

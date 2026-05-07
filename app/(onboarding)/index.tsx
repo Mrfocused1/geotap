@@ -15,7 +15,7 @@ type Slide = {
 const SLIDES: Slide[] = [
   {
     title: 'Drop a Geofence',
-    body: 'Pin a place — Home, Office, the Gym — and choose a radius. Trace Back watches that boundary in the background.',
+    body: 'Pin a place — Home, Office, the Gym — and choose a radius. Memo Push watches that boundary in the background.',
     icon: 'pin',
   },
   {
@@ -25,7 +25,7 @@ const SLIDES: Slide[] = [
   },
   {
     title: 'Get a Reminder',
-    body: 'When you leave, Trace Back checks what you forgot to tick off and sends a single notification. Tap it to see what is missing.',
+    body: 'When you leave, Memo Push checks what you forgot to tick off and sends a single notification. Tap it to see what is missing.',
     icon: 'bell',
   },
 ];

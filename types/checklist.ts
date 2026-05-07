@@ -52,6 +52,6 @@ export type ChecklistInput = {
   description?: string | null;
   isRecurring?: boolean;
   recurrencePattern?: RecurrencePattern;
-  items: Array<Pick<ChecklistItem, 'name' | 'priority' | 'sortOrder'>>;
+  items: Array<Pick<ChecklistItem, 'name' | 'priority' | 'sortOrder'> & { id?: string }>;
   geofenceIds: string[];
 };

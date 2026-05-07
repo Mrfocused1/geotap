@@ -32,7 +32,7 @@ export async function setupNotifications(): Promise<void> {
 
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
-      name: 'Trace Back Alerts',
+      name: 'Memo Push Alerts',
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
     });
@@ -43,7 +43,7 @@ export const notificationService: INotificationService = {
   async scheduleSnooze(input) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Trace Back — Reminder',
+        title: 'Memo Push — Reminder',
         body: 'You have unchecked items on your checklist.',
         data: {
           checklistId: input.checklistId,
@@ -74,7 +74,7 @@ export const notificationService: INotificationService = {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: `Trace Back — ${geofenceName}`,
+        title: `Memo Push — ${geofenceName}`,
         body,
         data: { checklistId, geofenceId },
       },

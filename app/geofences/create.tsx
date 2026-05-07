@@ -39,7 +39,7 @@ export default function CreateGeofenceScreen() {
     if (fgStatus !== 'granted') {
       Alert.alert(
         'Location required',
-        'Trace Back needs location access to monitor geofences. Please enable it in Settings.',
+        'Memo Push needs location access to monitor geofences. Please enable it in Settings.',
         [{ text: 'OK' }]
       );
       return;

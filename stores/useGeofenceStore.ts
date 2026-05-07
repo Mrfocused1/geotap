@@ -16,6 +16,8 @@ type GeofenceState = {
   setError: (msg: string | null) => void;
   setLoading: (loading: boolean) => void;
 
+  reset: () => Promise<void>;
+
   // async actions
   loadGeofences: (userId: string) => Promise<void>;
   createGeofence: (
@@ -34,6 +36,11 @@ export const useGeofenceStore = create<GeofenceState>((set, get) => ({
   geofences: [],
   isLoading: false,
   error: null,
+
+  reset: async () => {
+    set({ geofences: [], isLoading: false, error: null });
+    await AsyncStorage.removeItem(Config.storage.GEOFENCE_CACHE_KEY);
+  },
 
   setGeofences: (geofences) => set({ geofences }),
   upsert: (geofence) =>

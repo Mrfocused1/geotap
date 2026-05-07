@@ -10,7 +10,8 @@ import type { IChecklistService } from '@/services/interfaces/IChecklistService'
 import type { IGeofenceService } from '@/services/interfaces/IGeofenceService';
 import type { IGeocodingService } from '@/services/interfaces/IGeocodingService';
 
-export const USE_MOCK = true as const;
+export const USE_MOCK =
+  process.env.EXPO_PUBLIC_USE_MOCK !== 'false';
 
 export const authService: IAuthService = USE_MOCK
   ? mockAuthService

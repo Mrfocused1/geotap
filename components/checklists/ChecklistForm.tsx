@@ -185,6 +185,7 @@ export function ChecklistForm({
       name: state.name.trim(),
       geofenceIds: state.geofenceIds,
       items: cleaned.map((i, idx) => ({
+        id: i.key.startsWith('draft-') ? undefined : i.key,
         name: i.name,
         priority: i.priority,
         sortOrder: idx,

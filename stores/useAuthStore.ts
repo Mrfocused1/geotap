@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { authService } from '@/services';
+import { useChecklistStore } from '@/stores/useChecklistStore';
+import { useGeofenceStore } from '@/stores/useGeofenceStore';
 import type { AuthSession, User } from '@/types/user';
 
 export type AuthStatus =
@@ -110,6 +112,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: async () => {
     await authService.logout();
+    await Promise.all([
+      useChecklistStore.getState().reset(),
+      useGeofenceStore.getState().reset(),
+    ]);
     set({
       session: null,
       user: null,

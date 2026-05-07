@@ -23,6 +23,8 @@ type ChecklistState = {
   isLoading: boolean;
   error: string | null;
 
+  reset: () => Promise<void>;
+
   // sync helpers
   setChecklists: (next: Checklist[]) => void;
   upsert: (checklist: Checklist) => void;
@@ -71,6 +73,7 @@ function toInputItems(items: ChecklistItem[]) {
     .slice()
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .map((it, idx) => ({
+      id: it.id,
       name: it.name,
       priority: it.priority,
       sortOrder: idx,
@@ -99,6 +102,15 @@ export const useChecklistStore = create<ChecklistState>((set, get) => ({
   activeSession: null,
   isLoading: false,
   error: null,
+
+  reset: async () => {
+    set({ checklists: [], activeSession: null, isLoading: false, error: null });
+    await clearSessionStorage();
+    await AsyncStorage.multiRemove([
+      Config.storage.ACTIVE_SESSION_KEY,
+      Config.storage.CHECKLIST_CACHE_KEY,
+    ]);
+  },
 
   setChecklists: (checklists) => set({ checklists }),
   upsert: (checklist) =>

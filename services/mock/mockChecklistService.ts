@@ -55,7 +55,7 @@ export const mockChecklistService: IChecklistService = {
       ...patch,
       items: patch.items
         ? patch.items.map((i, idx) => ({
-            id: `it-${Math.random().toString(36).slice(2)}`,
+            id: i.id ?? `it-${Math.random().toString(36).slice(2)}`,
             checklistId: id,
             name: i.name,
             priority: i.priority,
