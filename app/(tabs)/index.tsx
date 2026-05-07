@@ -15,12 +15,6 @@ function timeGreeting(): string {
   return 'Good evening';
 }
 
-function timeEmoji(): string {
-  const h = new Date().getHours();
-  if (h < 12) return '☀️';
-  if (h < 18) return '🌤️';
-  return '🌙';
-}
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -76,7 +70,7 @@ export default function HomeScreen() {
       <View className="flex-row items-start justify-between pt-12 pb-5">
         <View className="flex-1 pr-3">
           <Text className="text-slate-900 text-2xl font-bold" numberOfLines={1}>
-            {timeGreeting()}, {firstName}! {timeEmoji()}
+            {timeGreeting()}, {firstName}
           </Text>
           <Text className="text-slate-500 text-sm mt-1">
             {activeGeofences.length === 0

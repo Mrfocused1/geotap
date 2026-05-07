@@ -136,7 +136,7 @@ export default function SettingsScreen() {
       <View className="bg-surface rounded-card border border-slate-200 overflow-hidden">
         <View
           className="flex-row items-center justify-between px-4"
-          style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
+          style={{ height: Config.a11y.MIN_TAP_TARGET }}
         >
           <Text className="text-slate-800">Notifications enabled</Text>
           <Switch
@@ -145,6 +145,7 @@ export default function SettingsScreen() {
             trackColor={{ false: Colors.border.light, true: Colors.primary[600] }}
             thumbColor="#ffffff"
             accessibilityLabel="Toggle notifications"
+            style={{ alignSelf: 'center' }}
           />
         </View>
       </View>

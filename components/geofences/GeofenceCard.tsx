@@ -49,6 +49,7 @@ export function GeofenceCard({
             true: Colors.primary[600],
           }}
           thumbColor="#ffffff"
+          style={{ alignSelf: 'center' }}
         />
       </View>
       <View className="flex-row gap-2">

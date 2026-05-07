@@ -12,12 +12,6 @@ type Props = {
   onPress: (id: string) => void;
 };
 
-function pickIndicatorColor(checklist: Checklist): string {
-  const hasCritical = checklist.items.some((i) => i.priority === 'critical');
-  if (hasCritical) return Colors.accent.DEFAULT;
-  return Colors.primary[600];
-}
-
 export function ChecklistCard({
   checklist,
   geofences,
@@ -33,7 +27,6 @@ export function ChecklistCard({
       ? 'No geofences linked'
       : linkedNames.join(' · ');
   const itemCount = checklist.items.length;
-  const indicator = pickIndicatorColor(checklist);
   const clamped = Math.max(0, Math.min(100, Math.round(progressPct)));
 
   return (
@@ -43,7 +36,7 @@ export function ChecklistCard({
       onPress={() => onPress(checklist.id)}
       className="bg-surface-light rounded-card border border-slate-200 overflow-hidden flex-row"
     >
-      <View style={{ width: 6, backgroundColor: indicator }} />
+      <View style={{ width: 4, backgroundColor: Colors.primary[600] }} />
       <View className="flex-1 p-4 gap-2">
         <View className="flex-row items-center gap-2">
           <ListChecks stroke={Colors.primary[600]} size={18} />
@@ -65,7 +58,7 @@ export function ChecklistCard({
           accessibilityRole="progressbar"
           accessibilityValue={{ min: 0, max: 100, now: clamped }}
           accessibilityLabel={`${clamped}% complete`}
-          className="h-1.5 rounded-full bg-slate-200 overflow-hidden mt-1"
+          className="h-2 rounded-full bg-slate-200 overflow-hidden mt-1"
         >
           <View
             style={{

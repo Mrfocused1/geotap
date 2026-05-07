@@ -212,7 +212,7 @@ export default function ChecklistRunScreen() {
   return (
     <ScrollView
       className="flex-1 bg-surface-dark"
-      contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 96 }}
+      contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 40 }}
     >
       <View className="gap-1">
         <Text className="text-slate-900 text-2xl font-bold" numberOfLines={2}>
@@ -230,7 +230,7 @@ export default function ChecklistRunScreen() {
         accessibilityRole="progressbar"
         accessibilityValue={{ min: 0, max: 100, now: progressPct }}
         accessibilityLabel={`${progressPct}% complete`}
-        className="h-2 rounded-full bg-slate-200 overflow-hidden"
+        className="h-3 rounded-full bg-slate-200 overflow-hidden"
       >
         <View
           style={{
@@ -245,20 +245,24 @@ export default function ChecklistRunScreen() {
       </Text>
 
       <View className="flex-row gap-2">
-        <View className="flex-1">
-          <Button
-            label="Check All"
-            variant="secondary"
-            onPress={checkAll}
-          />
-        </View>
-        <View className="flex-1">
-          <Button
-            label="Reset All"
-            variant="secondary"
-            onPress={resetAll}
-          />
-        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Check all items"
+          onPress={checkAll}
+          className="flex-1 min-h-[48px] items-center justify-center rounded-card"
+          style={{ backgroundColor: `${Colors.primary[600]}12`, borderWidth: 1, borderColor: `${Colors.primary[600]}30` }}
+        >
+          <Text className="text-primary-700 font-semibold text-sm">Check All</Text>
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Reset all items"
+          onPress={resetAll}
+          className="flex-1 min-h-[48px] items-center justify-center rounded-card"
+          style={{ backgroundColor: '#f1f5f9', borderWidth: 1, borderColor: '#e2e8f0' }}
+        >
+          <Text className="text-slate-600 font-semibold text-sm">Reset All</Text>
+        </Pressable>
       </View>
 
       <View className="gap-2">
