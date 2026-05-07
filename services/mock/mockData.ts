@@ -14,6 +14,7 @@ export const MOCK_USER: User = {
     sound: true,
     vibration: true,
   },
+  planId: 'free',
   createdAt: NOW,
   updatedAt: NOW,
 };

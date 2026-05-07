@@ -1,3 +1,5 @@
+import type { PlanId } from '@/constants/plans';
+
 export type NotificationSettings = {
   globalEnabled: boolean;
   sound: boolean;
@@ -10,6 +12,7 @@ export type User = {
   displayName: string | null;
   avatarUrl: string | null;
   notificationSettings: NotificationSettings;
+  planId: PlanId;
   createdAt: string;
   updatedAt: string;
 };

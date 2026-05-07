@@ -7,10 +7,12 @@ import { TraceBackMapView } from '@/components/map/TraceBackMapView';
 import { GeofenceCircle } from '@/components/map/GeofenceCircle';
 import { GeofenceMarker } from '@/components/map/GeofenceMarker';
 import { GeofenceCard } from '@/components/geofences/GeofenceCard';
+import { UpgradeModal } from '@/components/ui/UpgradeModal';
 import { Colors } from '@/constants/colors';
-import { Config } from '@/constants/config';
+import { limitLabel } from '@/constants/plans';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useGeofenceStore } from '@/stores/useGeofenceStore';
+import { usePlanLimits } from '@/hooks/usePlanLimits';
 
 type ViewMode = 'map' | 'list';
 
@@ -30,7 +32,9 @@ export default function GeofencesScreen() {
   const deleteGeofence = useGeofenceStore((s) => s.deleteGeofence);
   const toggleActive = useGeofenceStore((s) => s.toggleActive);
 
+  const { canAddGeofence, geofenceLimit } = usePlanLimits();
   const [mode, setMode] = useState<ViewMode>('map');
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   useEffect(() => {
     if (user) loadGeofences(user.id);
@@ -48,11 +52,8 @@ export default function GeofencesScreen() {
   }, [geofences]);
 
   const onCreate = () => {
-    if (geofences.length >= Config.geofence.MAX_GEOFENCES) {
-      Alert.alert(
-        'Limit reached',
-        `You can save up to ${Config.geofence.MAX_GEOFENCES} geofences. Delete one to add a new one.`
-      );
+    if (!canAddGeofence(geofences.length)) {
+      setShowUpgrade(true);
       return;
     }
     router.push('/geofences/create');
@@ -91,7 +92,12 @@ export default function GeofencesScreen() {
   return (
     <View className="flex-1 bg-surface-dark">
       <View className="px-6 pt-16 pb-3 flex-row items-center justify-between">
-        <Text className="text-slate-900 text-3xl font-bold">Geofences</Text>
+        <View>
+          <Text className="text-slate-900 text-3xl font-bold">Geofences</Text>
+          <Text className="text-slate-500 text-xs mt-0.5">
+            {geofences.length} / {limitLabel(geofenceLimit)} used
+          </Text>
+        </View>
         <View className="flex-row bg-surface rounded-pill p-1">
           <Pressable
             accessibilityRole="button"
@@ -207,6 +213,8 @@ export default function GeofencesScreen() {
       >
         <Plus stroke="#ffffff" size={28} />
       </Pressable>
+
+      <UpgradeModal visible={showUpgrade} onClose={() => setShowUpgrade(false)} />
     </View>
   );
 }

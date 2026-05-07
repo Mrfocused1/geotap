@@ -10,10 +10,13 @@ import {
 import { useRouter } from 'expo-router';
 import { Plus, Search } from 'lucide-react-native';
 import { ChecklistCard } from '@/components/checklists/ChecklistCard';
+import { UpgradeModal } from '@/components/ui/UpgradeModal';
 import { Colors } from '@/constants/colors';
+import { limitLabel } from '@/constants/plans';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useChecklistStore } from '@/stores/useChecklistStore';
 import { useGeofenceStore } from '@/stores/useGeofenceStore';
+import { usePlanLimits } from '@/hooks/usePlanLimits';
 import type { Checklist } from '@/types/checklist';
 
 type SortMode = 'updated' | 'alpha' | 'items';
@@ -52,8 +55,10 @@ export default function ChecklistsScreen() {
   const geofences = useGeofenceStore((s) => s.geofences);
   const loadGeofences = useGeofenceStore((s) => s.loadGeofences);
 
+  const { canAddChecklist, checklistLimit } = usePlanLimits();
   const [query, setQuery] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('updated');
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   const hasFetchedGeofences = useRef(false);
 
@@ -86,8 +91,12 @@ export default function ChecklistsScreen() {
       Alert.alert('Not signed in', 'Please sign in to create a checklist.');
       return;
     }
+    if (!canAddChecklist(checklists.length)) {
+      setShowUpgrade(true);
+      return;
+    }
     router.push('/checklists/create');
-  }, [user, router]);
+  }, [user, checklists.length, canAddChecklist, router]);
 
   const onOpen = useCallback((id: string) => {
     router.push(`/checklists/${id}`);
@@ -113,6 +122,9 @@ export default function ChecklistsScreen() {
     <View className="flex-1 bg-surface-dark">
       <View className="px-6 pt-16 pb-3">
         <Text className="text-slate-900 text-3xl font-bold">Checklists</Text>
+        <Text className="text-slate-500 text-xs mt-0.5">
+          {checklists.length} / {limitLabel(checklistLimit)} used
+        </Text>
       </View>
 
       <View className="px-6 gap-3 pb-3">
@@ -191,6 +203,8 @@ export default function ChecklistsScreen() {
       >
         <Plus stroke="#ffffff" size={28} />
       </Pressable>
+
+      <UpgradeModal visible={showUpgrade} onClose={() => setShowUpgrade(false)} />
     </View>
   );
 }

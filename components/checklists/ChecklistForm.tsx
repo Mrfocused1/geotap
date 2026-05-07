@@ -15,8 +15,10 @@ import {
   Trash2,
 } from 'lucide-react-native';
 import { Button } from '@/components/ui/Button';
+import { UpgradeModal } from '@/components/ui/UpgradeModal';
 import { Colors } from '@/constants/colors';
 import { Config } from '@/constants/config';
+import { usePlanLimits } from '@/hooks/usePlanLimits';
 import type { ChecklistInput, ItemPriority } from '@/types/checklist';
 import type { Geofence } from '@/types/geofence';
 
@@ -81,6 +83,9 @@ export function ChecklistForm({
   onDelete,
   deleting = false,
 }: Props) {
+  const { canAddItem, itemLimit } = usePlanLimits();
+  const [showUpgrade, setShowUpgrade] = useState(false);
+
   const [state, setState] = useState<FormState>(() => ({
     name: initialValue?.name ?? '',
     geofenceIds: initialValue?.geofenceIds ?? [],
@@ -105,6 +110,10 @@ export function ChecklistForm({
   const addItem = () => {
     const text = state.newItemText.trim();
     if (text.length === 0) return;
+    if (!canAddItem(state.items.length)) {
+      setShowUpgrade(true);
+      return;
+    }
     setState((s) => ({
       ...s,
       items: [
@@ -265,7 +274,14 @@ export function ChecklistForm({
       </View>
 
       <View className="gap-2">
-        <Text className="text-slate-700 font-medium text-sm">Items</Text>
+        <View className="flex-row items-baseline justify-between">
+          <Text className="text-slate-700 font-medium text-sm">Items</Text>
+          {itemLimit !== -1 && (
+            <Text className="text-slate-400 text-xs">
+              {state.items.length} / {itemLimit}
+            </Text>
+          )}
+        </View>
         {state.items.map((item, idx) => (
           <View
             key={item.key}
@@ -377,6 +393,8 @@ export function ChecklistForm({
           onPress={onDelete}
         />
       ) : null}
+
+      <UpgradeModal visible={showUpgrade} onClose={() => setShowUpgrade(false)} />
     </ScrollView>
   );
 }

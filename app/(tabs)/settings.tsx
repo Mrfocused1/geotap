@@ -12,8 +12,11 @@ import * as Location from 'expo-location';
 import Constants from 'expo-constants';
 import { Colors } from '@/constants/colors';
 import { Config } from '@/constants/config';
+import { formatPrice } from '@/constants/plans';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useNotificationStore } from '@/stores/useNotificationStore';
+import { UpgradeModal } from '@/components/ui/UpgradeModal';
+import { usePlanLimits } from '@/hooks/usePlanLimits';
 
 type PermStatus = 'granted' | 'denied' | 'undetermined';
 
@@ -49,6 +52,8 @@ function SectionHeader({ title }: { title: string }) {
 export default function SettingsScreen() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+  const { plan } = usePlanLimits();
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   const notifPermission = useNotificationStore((s) => s.permissionStatus);
   const checkPermissions = useNotificationStore((s) => s.checkPermissions);
@@ -128,6 +133,39 @@ export default function SettingsScreen() {
           <Text className="text-slate-800 flex-1" numberOfLines={1}>
             {user?.email ?? '—'}
           </Text>
+        </View>
+      </View>
+
+      {/* Plan */}
+      <SectionHeader title="Plan" />
+      <View className="bg-surface rounded-card border border-slate-200 overflow-hidden">
+        <View
+          className="flex-row items-center justify-between px-4"
+          style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
+        >
+          <View style={{ gap: 2 }}>
+            <Text className="text-slate-800 font-semibold">{plan.name}</Text>
+            <Text className="text-slate-500 text-xs">
+              {formatPrice(plan.priceCents)}
+            </Text>
+          </View>
+          {plan.id !== 'unlimited' && (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Upgrade plan"
+              onPress={() => setShowUpgrade(true)}
+              style={{
+                backgroundColor: Colors.primary[600],
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                borderRadius: 10,
+              }}
+            >
+              <Text style={{ color: '#ffffff', fontWeight: '700', fontSize: 13 }}>
+                Upgrade
+              </Text>
+            </Pressable>
+          )}
         </View>
       </View>
 
@@ -245,6 +283,8 @@ export default function SettingsScreen() {
           <Text className="text-slate-500 text-lg">›</Text>
         </Pressable>
       </View>
+
+      <UpgradeModal visible={showUpgrade} onClose={() => setShowUpgrade(false)} />
     </ScrollView>
   );
 }
