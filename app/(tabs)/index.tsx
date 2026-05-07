@@ -80,8 +80,8 @@ export default function HomeScreen() {
         </View>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Notifications"
-          onPress={() => {}}
+          accessibilityLabel="Recent activity"
+          onPress={() => router.push('/activity')}
           className="w-10 h-10 items-center justify-center rounded-full bg-surface border border-slate-200"
           style={{ marginTop: 2 }}
         >

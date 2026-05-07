@@ -2,6 +2,8 @@ import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Config } from '@/constants/config';
+
+const GLOBAL_ENABLED_KEY = '@memopush/notifications-global-enabled';
 import { notificationService } from '@/services/notificationService';
 import type { Checklist } from '@/types/checklist';
 import type { Geofence } from '@/types/geofence';
@@ -34,11 +36,15 @@ TaskManager.defineTask<GeofencingTaskBody>(
     if (!geofenceId) return;
 
     try {
-      const [geofenceRaw, checklistRaw, sessionRaw] = await Promise.all([
+      const [geofenceRaw, checklistRaw, sessionRaw, globalEnabledRaw] = await Promise.all([
         AsyncStorage.getItem(Config.storage.GEOFENCE_CACHE_KEY),
         AsyncStorage.getItem(Config.storage.CHECKLIST_CACHE_KEY),
         AsyncStorage.getItem(Config.storage.ACTIVE_SESSION_KEY),
+        AsyncStorage.getItem(GLOBAL_ENABLED_KEY),
       ]);
+
+      // Respect the user's notification toggle
+      if (globalEnabledRaw === 'false') return;
 
       if (!geofenceRaw || !checklistRaw) return;
 

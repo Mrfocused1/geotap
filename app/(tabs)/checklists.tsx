@@ -51,6 +51,7 @@ export default function ChecklistsScreen() {
   const checklists = useChecklistStore((s) => s.checklists);
   const isLoading = useChecklistStore((s) => s.isLoading);
   const loadChecklists = useChecklistStore((s) => s.loadChecklists);
+  const activeSession = useChecklistStore((s) => s.activeSession);
 
   const geofences = useGeofenceStore((s) => s.geofences);
   const loadGeofences = useGeofenceStore((s) => s.loadGeofences);
@@ -107,15 +108,21 @@ export default function ChecklistsScreen() {
   }, [user, loadChecklists]);
 
   const renderItem = useCallback(
-    ({ item }: { item: Checklist }) => (
-      <ChecklistCard
-        checklist={item}
-        geofences={geofences}
-        progressPct={0} // TODO: wire active session progress in Plan 4
-        onPress={onOpen}
-      />
-    ),
-    [geofences, onOpen]
+    ({ item }: { item: Checklist }) => {
+      const pct =
+        activeSession?.checklistId === item.id && item.items.length > 0
+          ? Math.round((activeSession.checkedItemIds.size / item.items.length) * 100)
+          : 0;
+      return (
+        <ChecklistCard
+          checklist={item}
+          geofences={geofences}
+          progressPct={pct}
+          onPress={onOpen}
+        />
+      );
+    },
+    [geofences, onOpen, activeSession]
   );
 
   return (

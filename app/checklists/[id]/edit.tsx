@@ -124,6 +124,9 @@ export default function EditChecklistScreen() {
       geofences={geofences}
       initialValue={{
         name: checklist.name,
+        description: checklist.description,
+        isRecurring: checklist.isRecurring,
+        recurrencePattern: checklist.recurrencePattern,
         geofenceIds: checklist.geofenceIds,
         items: sortedItems.map((i) => ({
           id: i.id,

@@ -14,7 +14,7 @@ type PlanLimitHelpers = {
 
 export function usePlanLimits(): PlanLimitHelpers {
   const planId = useAuthStore((s) => s.user?.planId ?? 'free');
-  const plan = PLANS[planId];
+  const plan = PLANS[planId] ?? PLANS.free;
 
   return {
     plan,

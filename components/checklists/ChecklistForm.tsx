@@ -3,6 +3,7 @@ import {
   Alert,
   Pressable,
   ScrollView,
+  Switch,
   Text,
   TextInput,
   View,
@@ -19,7 +20,7 @@ import { UpgradeModal } from '@/components/ui/UpgradeModal';
 import { Colors } from '@/constants/colors';
 import { Config } from '@/constants/config';
 import { usePlanLimits } from '@/hooks/usePlanLimits';
-import type { ChecklistInput, ItemPriority } from '@/types/checklist';
+import type { ChecklistInput, ItemPriority, RecurrencePattern } from '@/types/checklist';
 import type { Geofence } from '@/types/geofence';
 
 type DraftItem = {
@@ -28,8 +29,18 @@ type DraftItem = {
   priority: ItemPriority;
 };
 
+const RECURRENCE_OPTIONS: { id: RecurrencePattern; label: string }[] = [
+  { id: 'daily', label: 'Every day' },
+  { id: 'weekdays', label: 'Weekdays (Mon–Fri)' },
+  { id: 'weekly_monday', label: 'Weekly on Monday' },
+  { id: 'weekly_sunday', label: 'Weekly on Sunday' },
+];
+
 type FormState = {
   name: string;
+  description: string;
+  isRecurring: boolean;
+  recurrencePattern: RecurrencePattern;
   geofenceIds: string[];
   items: DraftItem[];
   newItemText: string;
@@ -39,6 +50,9 @@ type Props = {
   geofences: Geofence[];
   initialValue?: {
     name: string;
+    description: string | null;
+    isRecurring: boolean;
+    recurrencePattern: RecurrencePattern;
     geofenceIds: string[];
     items: Array<{ id: string; name: string; priority: ItemPriority }>;
   };
@@ -88,6 +102,9 @@ export function ChecklistForm({
 
   const [state, setState] = useState<FormState>(() => ({
     name: initialValue?.name ?? '',
+    description: initialValue?.description ?? '',
+    isRecurring: initialValue?.isRecurring ?? false,
+    recurrencePattern: initialValue?.recurrencePattern ?? null,
     geofenceIds: initialValue?.geofenceIds ?? [],
     items:
       initialValue?.items.map((i) => ({
@@ -192,6 +209,9 @@ export function ChecklistForm({
     }
     const input: ChecklistInput = {
       name: state.name.trim(),
+      description: state.description.trim() || null,
+      isRecurring: state.isRecurring,
+      recurrencePattern: state.isRecurring ? state.recurrencePattern : null,
       geofenceIds: state.geofenceIds,
       items: cleaned.map((i, idx) => ({
         id: i.key.startsWith('draft-') ? undefined : i.key,
@@ -221,6 +241,93 @@ export function ChecklistForm({
           className="min-h-[48px] rounded-input border border-slate-200 bg-surface px-3 text-slate-800"
         />
       </View>
+
+      <View className="gap-1">
+        <Text className="text-slate-700 font-medium text-sm">
+          Description <Text className="text-slate-400 font-normal">(optional)</Text>
+        </Text>
+        <TextInput
+          accessibilityLabel="Checklist description"
+          value={state.description}
+          onChangeText={(t) => setState((s) => ({ ...s, description: t }))}
+          placeholder="Add a note about this checklist…"
+          placeholderTextColor="#94a3b8"
+          multiline
+          numberOfLines={2}
+          className="rounded-input border border-slate-200 bg-surface px-3 py-2 text-slate-800"
+          style={{ minHeight: 56, textAlignVertical: 'top' }}
+        />
+      </View>
+
+      <View
+        className="flex-row items-center justify-between px-4 bg-surface rounded-card border border-slate-200"
+        style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
+      >
+        <Text className="text-slate-800">Recurring checklist</Text>
+        <Switch
+          value={state.isRecurring}
+          onValueChange={(v) =>
+            setState((s) => ({
+              ...s,
+              isRecurring: v,
+              recurrencePattern: v ? (s.recurrencePattern ?? 'daily') : null,
+            }))
+          }
+          trackColor={{ false: '#e2e8f0', true: Colors.primary[600] }}
+          thumbColor="#ffffff"
+          accessibilityLabel="Toggle recurring"
+          style={{ alignSelf: 'center' }}
+        />
+      </View>
+
+      {state.isRecurring && (
+        <View className="gap-2">
+          <Text className="text-slate-700 font-medium text-sm">Repeat</Text>
+          <View className="gap-1">
+            {RECURRENCE_OPTIONS.map((opt) => {
+              const selected = state.recurrencePattern === opt.id;
+              return (
+                <Pressable
+                  key={String(opt.id)}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  accessibilityLabel={opt.label}
+                  onPress={() =>
+                    setState((s) => ({ ...s, recurrencePattern: opt.id }))
+                  }
+                  className="flex-row items-center gap-3 px-4 bg-surface rounded-card border border-slate-200"
+                  style={{ minHeight: Config.a11y.MIN_TAP_TARGET }}
+                >
+                  <View
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: 10,
+                      borderWidth: 2,
+                      borderColor: selected ? Colors.primary[600] : '#94a3b8',
+                      backgroundColor: selected ? Colors.primary[600] : 'transparent',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {selected ? (
+                      <View
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: 4,
+                          backgroundColor: '#ffffff',
+                        }}
+                      />
+                    ) : null}
+                  </View>
+                  <Text className="text-slate-800">{opt.label}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+      )}
 
       <View className="gap-2">
         <Text className="text-slate-700 font-medium text-sm">

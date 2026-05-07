@@ -84,14 +84,17 @@ export default function RootLayout() {
     Inter_700Bold,
   });
 
+  const loadGlobalEnabled = useNotificationStore((s) => s.loadGlobalEnabled);
+
   useEffect(() => {
     hydrate();
     restoreSession().catch(() => undefined);
     checkPermissions().catch(() => undefined);
+    loadGlobalEnabled().catch(() => undefined);
     AsyncStorage.getItem(Config.storage.ONBOARDING_KEY).then((v) => {
       setOnboardingComplete(v === 'true');
     });
-  }, [hydrate, restoreSession, checkPermissions]);
+  }, [hydrate, restoreSession, checkPermissions, loadGlobalEnabled]);
 
   useAuthRouting(onboardingComplete);
 
@@ -152,6 +155,22 @@ export default function RootLayout() {
           options={{
             headerShown: true,
             headerTitle: 'Edit Checklist',
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="checklists/[id]/history"
+          options={{
+            headerShown: true,
+            headerTitle: 'History',
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="activity"
+          options={{
+            headerShown: true,
+            headerTitle: 'Recent Activity',
             presentation: 'modal',
           }}
         />

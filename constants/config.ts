@@ -11,7 +11,7 @@ export const Config = {
   geocoding: {
     DEBOUNCE_MS: 500,
     NOMINATIM_URL: 'https://nominatim.openstreetmap.org/search',
-    USER_AGENT: 'TraceBackApp/0.1 (contact@traceback.app)',
+    USER_AGENT: 'MemoPushApp/0.1 (contact@memopush.app)',
   },
   storage: {
     SESSION_KEY: '@traceback/session',

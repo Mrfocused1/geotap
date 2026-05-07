@@ -57,9 +57,10 @@ export default function SettingsScreen() {
 
   const notifPermission = useNotificationStore((s) => s.permissionStatus);
   const checkPermissions = useNotificationStore((s) => s.checkPermissions);
+  const globalEnabled = useNotificationStore((s) => s.globalEnabled);
+  const setGlobalEnabled = useNotificationStore((s) => s.setGlobalEnabled);
 
   const [locationStatus, setLocationStatus] = useState<PermStatus>('undetermined');
-  const [notifEnabled, setNotifEnabled] = useState(true);
 
   useEffect(() => {
     checkPermissions().catch(() => undefined);
@@ -178,8 +179,8 @@ export default function SettingsScreen() {
         >
           <Text className="text-slate-800">Notifications enabled</Text>
           <Switch
-            value={notifEnabled}
-            onValueChange={setNotifEnabled}
+            value={globalEnabled}
+            onValueChange={(v) => setGlobalEnabled(v).catch(() => undefined)}
             trackColor={{ false: Colors.border.light, true: Colors.primary[600] }}
             thumbColor="#ffffff"
             accessibilityLabel="Toggle notifications"

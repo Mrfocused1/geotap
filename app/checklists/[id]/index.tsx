@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import {
   useLocalSearchParams,
-  useRouter,
   useNavigation,
+  useRouter,
 } from 'expo-router';
-import { Pencil } from 'lucide-react-native';
+import { History, Pencil } from 'lucide-react-native';
 import { Button } from '@/components/ui/Button';
 import { ChecklistItemRow } from '@/components/checklists/ChecklistItemRow';
 import { Colors } from '@/constants/colors';
@@ -89,20 +89,30 @@ export default function ChecklistRunScreen() {
     }
   }, [id, checklist, geofenceId, startSession]);
 
-  // Header Edit button
+  // Header buttons: History + Edit
   useEffect(() => {
     if (typeof id !== 'string') return;
     navigation.setOptions({
       headerRight: () => (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Edit checklist"
-          onPress={() => router.push(`/checklists/${id}/edit`)}
-          className="px-3 py-2 flex-row items-center gap-1"
-        >
-          <Pencil stroke={Colors.primary[600]} size={16} />
-          <Text className="text-primary-600 font-semibold">Edit</Text>
-        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="View history"
+            onPress={() => router.push(`/checklists/${id}/history`)}
+            className="px-3 py-2 flex-row items-center gap-1"
+          >
+            <History stroke={Colors.text.muted} size={16} />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Edit checklist"
+            onPress={() => router.push(`/checklists/${id}/edit`)}
+            className="px-3 py-2 flex-row items-center gap-1"
+          >
+            <Pencil stroke={Colors.primary[600]} size={16} />
+            <Text className="text-primary-600 font-semibold">Edit</Text>
+          </Pressable>
+        </View>
       ),
     });
   }, [id, navigation, router]);
